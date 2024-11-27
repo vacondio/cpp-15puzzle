@@ -4,9 +4,9 @@
 #include <array>
 
 // should prolly move to a globals.h file
-constexpr int row    {4};
-constexpr int column {4};
-constexpr int nboxes {row*column};
+constexpr int rows    {4};
+constexpr int columns {4};
+constexpr int nboxes  {rows*columns};
 
 enum InitType
 {
@@ -23,7 +23,7 @@ public:
   Puzzle(InitType initChoice);
   Puzzle();
   
-  void print_boxes() const;
+  void print_boxes() const; // this shall be done with operator overloading
   
 private:
   std::array<int,nboxes> boxes {};
