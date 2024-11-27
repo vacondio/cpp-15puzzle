@@ -2,6 +2,7 @@
 // #include <array>
 #include <cstddef>
 #include <iostream>
+#include <random>
 
 Puzzle::Puzzle(InitType initChoice)
   : boxes { init_boxes(initChoice) } {}
@@ -42,6 +43,38 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
       case horizSwap:
       case vertSwap:
       case randomOrder:
+        {
+          // random generation shall be made smarter
+          std::random_device rd;
+          std::mt19937 gen(rd());
+          std::uniform_int_distribution<> distrib[nboxes]{};
+          
+          for (int i{0}; i<nboxes; ++i)
+            {
+              distrib[i] = std::uniform_int_distribution<>(1,nboxes-i);
+            }
+          // // debug
+          // for (int i{0}; i<nboxes; ++i)
+          //   std::cout << distrib[i](gen) << "\n";
+        
+          for (int i{0}; i<nboxes; ++i)
+          {
+            int num  {distrib[i](gen)};
+            int num_ {num};
+            for (int j{0}; j<i; ++j)
+              {
+              if (num >= tmp[j])
+                {
+                  num_ = num;
+                  ++num;
+                  // once it is increased, we should check again starting from
+                  // tmp[0], but doing so causes an infinite loop
+                }
+              }
+            tmp[i] = num;
+          }
+        }
+        break;
       default:
         break;
   }  
