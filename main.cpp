@@ -14,6 +14,21 @@ int main()
 
   puzzle.print_boxes();
 
+  if (puzzle.two_boxes_are_equal())
+    std::cout << "There are two equal boxes, alas!\n";
+  else
+    std::cout << "There are no two equal boxes, hooray!\n";
+
+  if (puzzle.max_too_high())
+    std::cout << "Max val is too high, alas!\n";
+  else
+    std::cout << "Max val is fine, hooray!\n";
+
+  if (puzzle.min_too_low())
+    std::cout << "Min val is too low, alas!\n";
+  else
+    std::cout << "Min val is fine, hooray!\n";
+
   std::cout << "\n" << "Hello world!\n";
   return 0;
 

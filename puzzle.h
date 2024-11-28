@@ -24,6 +24,9 @@ public:
   Puzzle();
   
   void print_boxes() const; // this shall be done with operator overloading
+  bool two_boxes_are_equal() const;
+  bool max_too_high() const;
+  bool min_too_low() const;
   
 private:
   std::array<int,nboxes> boxes {};

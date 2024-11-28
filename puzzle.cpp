@@ -14,7 +14,7 @@ void Puzzle::print_boxes() const
   for(std::size_t i{0}; i<nboxes; ++i)
     {
       std::cout << boxes[i];
-      if ((i+1)%4 == 0) std::cout << "\n";
+      if ((i+1)%columns == 0) std::cout << "\n";
       else std::cout << "\t";
     }
 }
@@ -22,6 +22,7 @@ void Puzzle::print_boxes() const
 std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
 {
   std::array<int,nboxes> tmp {};
+  // int tmp[nboxes] {};
 
   switch (initChoice)
   {
@@ -43,42 +44,60 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
       case horizSwap:
       case vertSwap:
       case randomOrder:
+        // // debug
+        // for (int i{0}; i<nboxes; ++i)
+        //   std::cout << distrib[i](gen) << "\n";
+        
+        for (int i{0}; i<nboxes; ++i)
         {
           // random generation shall be made smarter
           std::random_device rd;
           std::mt19937 gen(rd());
-          std::uniform_int_distribution<> distrib[nboxes]{};
+          std::uniform_int_distribution<> distrib{1,nboxes-i};
           
-          for (int i{0}; i<nboxes; ++i)
+          int num   {distrib(gen)};
+          int delta {0};
+          
+          for (int k{0}; k<i; ++k)
             {
-              distrib[i] = std::uniform_int_distribution<>(1,nboxes-i);
-            }
-          // // debug
-          // for (int i{0}; i<nboxes; ++i)
-          //   std::cout << distrib[i](gen) << "\n";
-        
-          for (int i{0}; i<nboxes; ++i)
-          {
-            int num  {distrib[i](gen)};
-            int num_ {num};
-            for (int j{0}; j<i; ++j)
-              {
-              if (num >= tmp[j])
+              if (num+delta == tmp[k])
                 {
-                  num_ = num;
-                  ++num;
-                  // once it is increased, we should check again starting from
-                  // tmp[0], but doing so causes an infinite loop
+                  ++delta;
+                  k=0;
                 }
+            }
+          for (int j{0}; j<i; ++j)
+            {
+            if (num > tmp[j])
+              {
+                ++delta;
+                for (int k{0}; k<i; ++k)
+                  {
+                    if (num+delta == tmp[k])
+                      {
+                        ++delta;
+                        k=0;
+                      }
+                  }
               }
-            tmp[i] = num;
-          }
+            }
+          for (int k{0}; k<i; ++k)
+            {
+              if (num+delta == tmp[k])
+                {
+                  ++delta;
+                  k=0;
+                }
+            }
+          tmp[i] = num+delta;
         }
         break;
       default:
         break;
   }  
+  // return static_cast<std::array<int,nboxes>>(tmp);
   return tmp;
+
 
   // return {1 , 2 , 3 , 4 ,
   //         5 , 6 , 7 , 8 ,
@@ -86,3 +105,33 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
   //         13, 14, 15, 16}; /* bad practice to return
   //                             but we'll do it for the sake of learning */
 }
+
+bool Puzzle::two_boxes_are_equal() const
+{
+  for (int i{0}; i<nboxes; ++i)
+    {
+      for (int j{i+1}; j<nboxes; ++j)
+        if (boxes[i] == boxes[j])
+          return true;
+    }
+  return false;
+}
+
+bool Puzzle::max_too_high() const
+{
+  for (int i{0}; i<nboxes; ++i)
+      if (boxes[i] > nboxes)
+        return true;
+  return false;
+}
+
+bool Puzzle::min_too_low() const
+{
+  for (int i{0}; i<nboxes; ++i)
+      if (boxes[i] < 1)
+        return true;
+  return false;
+}
+
+
+
