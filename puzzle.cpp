@@ -63,7 +63,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
               if (num+delta == tmp[k])
                 {
                   ++delta;
-                  k=0;
+                  k=-1;
                 }
             }
           for (int j{0}; j<i; ++j)
@@ -76,18 +76,10 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
                     if (num+delta == tmp[k])
                       {
                         ++delta;
-                        k=0;
+                        k=-1;
                       }
                   }
               }
-            }
-          for (int k{0}; k<i; ++k)
-            {
-              if (num+delta == tmp[k])
-                {
-                  ++delta;
-                  k=0;
-                }
             }
           tmp[i] = num+delta;
         }
@@ -95,10 +87,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
       default:
         break;
   }  
-  // return static_cast<std::array<int,nboxes>>(tmp);
   return tmp;
-
-
   // return {1 , 2 , 3 , 4 ,
   //         5 , 6 , 7 , 8 ,
   //         9 , 10, 11, 12,
