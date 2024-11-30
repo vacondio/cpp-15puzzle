@@ -1,0 +1,3 @@
+* 15puzzle
+** by Simone Vacondio
+Pet project to pick up C++ after some years of not using it.
