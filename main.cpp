@@ -47,8 +47,21 @@ int main()
     // std::cout << "Welcome to 15puzzle:";
     // while(true)
     //   {
-    //     cout << puzzle;
-    //     cin  >> puzzle; //needs input validity checks
-    //     if (puzzle) break;
+    //     cout << puzzle;    // overload << operator
+    //     cin  >> puzzle;    // overload >> operator (needs input validity check)
+    //     if (puzzle) break; // can be implemented by adding conversion methods to the class
     //   }
+    //
+    /* TODO LIST
+     *
+     * - wrap random number generation in a class (perhaps following
+     *   learncpp.com's lesson)
+     *
+     * - allow for initialization choice via command line arguments
+     *
+     * - add movement methods to Puzzle class
+     *
+     * - make commented code above work
+     *
+    */
 }
