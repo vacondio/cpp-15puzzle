@@ -14,6 +14,7 @@ enum InitType
     reverseTrivial,
     horizSwap,
     vertSwap,
+    randomOrderDumber,
     randomOrderDumb,
     randomOrder,  
 };

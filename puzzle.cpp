@@ -45,7 +45,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
   
     case horizSwap:
     case vertSwap:
-    case randomOrderDumb:
+    case randomOrderDumber:
         // // debug
         // for (int i{0}; i<nboxes; ++i)
         //   std::cout << distrib[i](gen) << "\n";
@@ -86,6 +86,45 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
             tmp[i] = num+delta;
         }
         break;
+    case randomOrderDumb: {
+        // // debug
+        // for (int i{0}; i<nboxes; ++i)
+        //   std::cout << distrib[i](gen) << "\n";
+            
+        std::array<int,nboxes> guesses {};
+        for (int i{0}; i<nboxes; ++i)
+            guesses[i] = i+1;
+
+        for (int i{0}; i<nboxes; ++i)
+        {
+            // random generation shall be made smarter
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<> distrib{0,nboxes-1-i};
+
+            int pos    {distrib(gen)};
+            int delta  {0};
+            int delta1 {0};
+            int delta2 {0};
+
+            for (int j{0}; j<pos; ++j)
+            {
+                if (guesses[j] == 0) ++delta1;
+            }
+            for (int d{0}; d<=delta1; ++d)
+            {
+                if (guesses[pos+delta2+d] == 0)
+                {
+                    ++delta2;
+                    --d;
+                }
+            }
+            delta = delta1 + delta2;
+
+            guesses[pos+delta] = 0;
+            tmp[i] = pos+delta+1;
+        }
+        break; }
     default:
     case randomOrder:
         std::vector<int> guesses(nboxes);
