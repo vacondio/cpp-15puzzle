@@ -10,7 +10,8 @@ int main()
     // Puzzle puzzle { InitType{reverseTrivial} };
     // Puzzle puzzle { InitType{horizSwap} };
     // Puzzle puzzle { InitType{vertSwap} };
-    Puzzle puzzle { InitType{randomOrder} };
+    // Puzzle puzzle(InitType{randomOrderDumb});
+    Puzzle puzzle(InitType{randomOrder});
   
     puzzle.print_boxes();
   

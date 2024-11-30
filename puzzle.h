@@ -14,7 +14,8 @@ enum InitType
     reverseTrivial,
     horizSwap,
     vertSwap,
-    randomOrder,
+    randomOrderDumb,
+    randomOrder,  
 };
 
 class Puzzle

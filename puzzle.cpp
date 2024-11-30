@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <iostream>
 #include <random>
+#include <vector>
 
 Puzzle::Puzzle(InitType initChoice)
     : boxes { init_boxes(initChoice) } {}
@@ -44,8 +45,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
   
     case horizSwap:
     case vertSwap:
-    default:
-    case randomOrder:
+    case randomOrderDumb:
         // // debug
         // for (int i{0}; i<nboxes; ++i)
         //   std::cout << distrib[i](gen) << "\n";
@@ -86,7 +86,32 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
             tmp[i] = num+delta;
         }
         break;
-    }  
+    default:
+    case randomOrder:
+        std::vector<int> guesses(nboxes);
+        for (int i{0}; i<nboxes; ++i)
+            guesses[i] = i+1;
+        
+        for (int i{0}; i<nboxes; ++i)
+        {
+            // random generation shall be made smarter
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<> distrib{0,nboxes-1-i};
+
+            int pos {distrib(gen)};
+            tmp[i] = guesses[pos];
+            guesses.erase(guesses.begin() + pos);
+            
+            // // debug
+            // for (int j{0}; j<guesses.size(); ++j)
+            // {
+            //     std::cout << guesses[j] << "\t";
+            // }
+            // std::cout << "\n";
+        }
+        break;
+    }
     return tmp;
     // return {1 , 2 , 3 , 4 ,
     //         5 , 6 , 7 , 8 ,
