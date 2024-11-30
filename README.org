@@ -1,3 +1,10 @@
 * 15puzzle
-** by Simone Vacondio
-Pet project to pick up C++ after some years of not using it.
+
+Pet project to pick up C++ after some years of not using it.  Compile ~main.cpp~
+and ~puzzle.cpp~ to obtain an executable. For example, with ~g++~:
+
+#+BEGIN_SRC bash
+g++ main.cpp puzzle.cpp -o bin.x
+#+END_SRC
+
+More will come.
