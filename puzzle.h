@@ -35,26 +35,26 @@ private:
     std::array<int,nboxes> init_boxes(InitType initChoice);
 };
 
-// with C-style array
-class PuzzleC
-{
-public:
-    int init_boxes()
-    {
-      // not allowed
-      // return {1 , 2 , 3 , 4 ,
-      //         5 , 6 , 7 , 8 ,
-      //         9 , 10, 11, 12,
-      //         13, 14, 15, 16};
-    }
+// // with C-style array
+// class PuzzleC
+// {
+// public:
+//     int init_boxes()
+//     {
+//       // not allowed
+//       // return {1 , 2 , 3 , 4 ,
+//       //         5 , 6 , 7 , 8 ,
+//       //         9 , 10, 11, 12,
+//       //         13, 14, 15, 16};
+//     }
     
-    PuzzleC (InitType initChoice) 
-    {
-      // ?
-    }
+//     PuzzleC (InitType initChoice) 
+//     {
+//       // ?
+//     }
     
-private:
-    int boxes[nboxes];
-};
+// private:
+//     int boxes[nboxes];
+// };
 
 #endif
