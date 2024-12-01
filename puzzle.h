@@ -23,10 +23,11 @@ enum InitType
 class Puzzle
 {
 public:
+    // constructors
     Puzzle(InitType initChoice);
     Puzzle();
 
-    // status
+    // status methods
     int  current_box() const;
     bool is_solved() const;
     void update_status();

@@ -6,6 +6,7 @@
 #include <random>
 #include <vector>
 
+// constructors
 Puzzle::Puzzle(InitType initChoice)
     : boxes(init_boxes(initChoice))
     , m_currentBox(init_current_box()) {}      
@@ -22,6 +23,7 @@ Puzzle::Puzzle() : Puzzle (InitType{randomOrder}) {}
 //     }
 // }
 
+// private init methods
 std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
 {
     std::array<int,nboxes> tmp {};
@@ -148,6 +150,53 @@ int Puzzle::init_current_box()
     return -1;
 }
 
+// status methods
+int Puzzle::current_box() const
+{
+    return m_currentBox;
+}
+
+bool Puzzle::is_solved() const
+{
+    return m_is_solved;
+}
+
+void Puzzle::update_status()
+{
+    for(int i{0}; i<nboxes-1; ++i)
+    {
+        if (boxes[i]>boxes[i+1]) return;
+    }
+    m_quit = true;
+}
+
+void Puzzle::quit()
+{
+    m_quit = true;
+}
+
+// movement methods
+void push_up()
+{
+    
+}
+
+void push_down()
+{
+    
+}
+
+void push_left()
+{
+    
+}
+
+void push_right()
+{
+    
+}
+
+// debug methods
 bool Puzzle::two_boxes_are_equal() const
 {
     for (int i{0};   i<nboxes; ++i)
@@ -177,30 +226,6 @@ bool Puzzle::min_too_low() const
           return true;
     }
     return false;
-}
-
-int Puzzle::current_box() const
-{
-    return m_currentBox;
-}
-
-bool Puzzle::is_solved() const
-{
-    return m_is_solved;
-}
-
-void Puzzle::update_status()
-{
-    for(int i{0}; i<nboxes-1; ++i)
-    {
-        if (boxes[i]>boxes[i+1]) return;
-    }
-    m_quit = true;
-}
-
-void Puzzle::quit()
-{
-    m_quit = true;
 }
 
 const int& Puzzle::operator[] (int i) const
