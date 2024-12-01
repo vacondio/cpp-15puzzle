@@ -179,7 +179,7 @@ bool Puzzle::min_too_low() const
     return false;
 }
 
-int Puzzle::current_box()
+int Puzzle::current_box() const
 {
     return m_currentBox;
 }

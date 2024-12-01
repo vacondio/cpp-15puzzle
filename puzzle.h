@@ -27,7 +27,7 @@ public:
     Puzzle();
 
     // status
-    int  current_box();
+    int  current_box() const;
     bool is_solved() const;
     void update_status();
     void quit();
