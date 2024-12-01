@@ -2,6 +2,7 @@
 #define PUZZLE_H
 
 #include <array>
+#include <iostream>
 
 // should prolly move to a globals.h file
 constexpr int rows    {4};
@@ -29,7 +30,13 @@ public:
     bool two_boxes_are_equal() const;
     bool max_too_high() const;
     bool min_too_low() const;
-    
+    bool puzzle_is_solved() const;
+
+    // do these as non-friend functions, it will be possible by using getters and setters
+    // friend std::ostream& operator<<(std::ostream& out, const Puzzle puzzle);
+    // friend std::istream& operator>>(std::istream& in ,       Puzzle puzzle);
+
+    operator bool() const;
 private:
     std::array<int,nboxes> boxes {};
     std::array<int,nboxes> init_boxes(InitType initChoice);

@@ -16,14 +16,14 @@ int main()
   
     puzzle.print_boxes();
 
-    // while(true)
-    //   {
-    //     // cout << puzzle;    // overload << operator
-    //     // cin  >> puzzle;    // overload >> operator (needs input validity check)
-    //     if (puzzle) break; // can be implemented by adding conversion methods to the class
-    //   }
+    while(true)
+      {
+        // cout << puzzle;    // overload << operator
+        // cin  >> puzzle;    // overload >> operator (needs input validity check)
+        if (puzzle) break; // can be implemented by adding conversion methods to the class
+      }
     
-    // return 0;
+    return 0;
   
     // Pseudo-code for the game
     // print welcome message

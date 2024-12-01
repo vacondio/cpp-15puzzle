@@ -9,7 +9,7 @@
 Puzzle::Puzzle(InitType initChoice)
     : boxes { init_boxes(initChoice) } {}
 
-Puzzle::Puzzle() : Puzzle (InitType{trivial}) {}
+Puzzle::Puzzle() : Puzzle (InitType{randomOrder}) {}
 
 // will replace with overloading of operator <<
 void Puzzle::print_boxes() const
@@ -171,3 +171,26 @@ bool Puzzle::min_too_low() const
     }
     return false;
 }
+
+bool Puzzle::puzzle_is_solved() const
+{
+    for(int i{0}; i<nboxes-1; ++i)
+    {
+        if (boxes[i]>boxes[i+1]) return false;
+    }
+    return true;
+}
+
+Puzzle::operator bool() const
+{
+    if (puzzle_is_solved()) return true;
+    else return false;
+}
+
+// std::ostream& operator<<(std::ostream& out, const Puzzle puzzle)
+// {
+// }
+
+// std::istream& operator>>(std::istream& in, Puzzle puzzle)
+// {
+// }
