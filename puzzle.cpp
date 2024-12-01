@@ -9,7 +9,8 @@
 // constructors
 Puzzle::Puzzle(InitType initChoice)
     : boxes(init_boxes(initChoice))
-    , m_currentBox(init_current_box()) {}      
+    , m_currentBox1D { init_current_box_1d() }
+    , m_currentBox2D { init_current_box_2d() } {}
 
 Puzzle::Puzzle() : Puzzle (InitType{randomOrder}) {}
 
@@ -143,17 +144,29 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
     //                             but we'll do it for the sake of learning */
 }
 
-int Puzzle::init_current_box()
+int Puzzle::init_current_box_1d()
 {
     for (int i{0}; i<nboxes; ++i)
         if (boxes[i]==nboxes) return i;
     return -1;
 }
 
-// status methods
-int Puzzle::current_box() const
+ArrayIdx2D Puzzle::init_current_box_2d()
 {
-    return m_currentBox;
+    int i { m_currentBox1D / columns };
+    int j { m_currentBox1D % columns };
+    return ArrayIdx2D { i, j };
+}
+
+// status methods
+int Puzzle::current_box_1d() const
+{
+    return m_currentBox1D;
+}
+
+ArrayIdx2D Puzzle::current_box_2d() const
+{
+    return m_currentBox2D;
 }
 
 bool Puzzle::is_solved() const

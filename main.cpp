@@ -16,7 +16,10 @@ int main()
   
     // puzzle.print_boxes();
 
-    std::cout << "Current box is " << puzzle.current_box() << "\n";
+    std::cout << "Current box in 1D is " << puzzle.current_box_1d() << "\n";
+    std::cout << "Current box in 2D is " << puzzle.current_box_2d().i
+              << ", "                    << puzzle.current_box_2d().j << "\n";
+    
     while(!puzzle)
     {
         std::cout << puzzle;  // overload << operator

@@ -9,6 +9,12 @@ constexpr int rows    {4};
 constexpr int columns {4};
 constexpr int nboxes  {rows*columns};
 
+struct ArrayIdx2D
+{
+    int i {};
+    int j {};
+};
+
 enum InitType
 {
     trivial,
@@ -28,7 +34,8 @@ public:
     Puzzle();
 
     // status methods
-    int  current_box() const;
+    int  current_box_1d() const;
+    ArrayIdx2D current_box_2d() const;
     bool is_solved() const;
     void update_status();
     void quit();
@@ -55,15 +62,16 @@ public:
     
 private:
     std::array<int,nboxes> boxes {};
-    int  m_currentBox {};
+    int        m_currentBox1D {};
+    ArrayIdx2D m_currentBox2D {};
     
     bool m_is_solved {false};
     bool m_quit {false};
 
     // private init methods
     std::array<int,nboxes> init_boxes(InitType initChoice);
-    int init_current_box();
-
+    int        init_current_box_1d();
+    ArrayIdx2D init_current_box_2d();
 };
 
 std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle);
