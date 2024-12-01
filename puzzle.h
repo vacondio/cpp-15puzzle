@@ -75,7 +75,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle);
-// std::istream& operator>>(std::istream& in,        Puzzle& puzzle);
+std::istream& operator>>(std::istream& in,        Puzzle& puzzle);
 
 // // with C-style array
 // class PuzzleC

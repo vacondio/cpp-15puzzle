@@ -1,6 +1,7 @@
 #include "puzzle.h"
 #include "Random.h"
-// #include <array>
+#include <algorithm>
+#include <array>
 #include <cstddef>
 #include <iostream>
 #include <random>
@@ -189,9 +190,22 @@ void Puzzle::quit()
 }
 
 // movement methods
-void push_up()
+void Puzzle::push_up()
 {
+    int iTarget { m_currentBox2D.i };
+    int jTarget { m_currentBox2D.j };
     
+    int iStart  { iTarget + 1 };
+    int jStart  { jTarget     };
+    
+    if (iStart > rows-1) return;
+
+    std::swap(boxes[ iStart*columns + jStart ],
+              boxes[iTarget*columns + jTarget]);
+    
+    m_currentBox1D   = iStart*columns + jStart;
+    m_currentBox2D.i = iStart;
+    m_currentBox2D.j = jStart;
 }
 
 void push_down()
@@ -276,23 +290,23 @@ std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle)
     return out;
 }
 
-// std::istream& operator>>(std::istream& in, Puzzle& puzzle)
-// {
-//     char inputChar {};
-//     while(in)
-//     {
-//         in >> inputChar;
-//         switch (inputChar)
-//         {
-//         case 'w':
-//             puzzle.push_up();    break;
-//         case 's':
-//             puzzle.push_down();  break;
-//         case 'a':
-//             puzzle.push_left();  break;
-//         case 'd':
-//             puzzle.push_right(); break;
-//             }
-//     }
-//     return in;
-// }
+std::istream& operator>>(std::istream& in, Puzzle& puzzle)
+{
+    char inputChar {};
+    // while(in)
+    // {
+        in >> inputChar;
+        switch (inputChar)
+        {
+        case 'w':
+            puzzle.push_up();    break;
+        // case 's':
+        //     puzzle.push_down();  break;
+        // case 'a':
+        //     puzzle.push_left();  break;
+        // case 'd':
+        //     puzzle.push_right(); break;
+         }
+    // }
+    return in;
+}
