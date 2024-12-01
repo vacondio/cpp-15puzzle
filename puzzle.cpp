@@ -1,4 +1,5 @@
 #include "puzzle.h"
+#include "Random.h"
 // #include <array>
 #include <cstddef>
 #include <iostream>
@@ -52,12 +53,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
         
         for (int i{0}; i<nboxes; ++i)
         {
-            // random generation shall be made smarter
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_int_distribution<> distrib{1,nboxes-i};
-            
-            int pos   {distrib(gen)};
+            int pos   {Random::get(1,nboxes-i)};
             int delta {0};
             
             for (int k{0}; k<i; ++k)
@@ -87,22 +83,13 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
         }
         break; }
     case randomOrderDumb: {
-        // // debug
-        // for (int i{0}; i<nboxes; ++i)
-        //   std::cout << distrib[i](gen) << "\n";
-            
         std::array<int,nboxes> guesses {};
         for (int i{0}; i<nboxes; ++i)
             guesses[i] = i+1;
 
         for (int i{0}; i<nboxes; ++i)
         {
-            // random generation shall be made smarter
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_int_distribution<> distrib{0,nboxes-1-i};
-
-            int pos    {distrib(gen)};
+            int pos    {Random::get(0,nboxes-1-i)};
             int delta  {0};
             int delta1 {0};
             int delta2 {0};
@@ -133,12 +120,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
         
         for (int i{0}; i<nboxes; ++i)
         {
-            // random generation shall be made smarter
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_int_distribution<> distrib{0,nboxes-1-i};
-
-            int pos {distrib(gen)};
+            int pos {Random::get(0,nboxes-1-i)};
             tmp[i] = guesses[pos];
             guesses.erase(guesses.begin() + pos);
             
