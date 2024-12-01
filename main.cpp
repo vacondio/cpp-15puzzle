@@ -16,11 +16,12 @@ int main()
   
     // puzzle.print_boxes();
 
+    std::cout << "Current box is " << puzzle.current_box() << "\n";
     while(!puzzle)
     {
         std::cout << puzzle;  // overload << operator
         // std::cin  >> puzzle;  // overload >> operator (needs input validity check)
         puzzle.update_status();
     }
-        return 0;
+    return 0;
 }

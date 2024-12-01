@@ -7,7 +7,8 @@
 #include <vector>
 
 Puzzle::Puzzle(InitType initChoice)
-    : boxes { init_boxes(initChoice) } {}
+    : boxes(init_boxes(initChoice))
+    , m_currentBox(init_current_box()) {}      
 
 Puzzle::Puzzle() : Puzzle (InitType{randomOrder}) {}
 
@@ -140,6 +141,13 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
     //                             but we'll do it for the sake of learning */
 }
 
+int Puzzle::init_current_box()
+{
+    for (int i{0}; i<nboxes; ++i)
+        if (boxes[i]==nboxes) return i;
+    return -1;
+}
+
 bool Puzzle::two_boxes_are_equal() const
 {
     for (int i{0};   i<nboxes; ++i)
@@ -171,6 +179,11 @@ bool Puzzle::min_too_low() const
     return false;
 }
 
+int Puzzle::current_box()
+{
+    return m_currentBox;
+}
+
 bool Puzzle::is_solved() const
 {
     return m_is_solved;
@@ -193,6 +206,11 @@ void Puzzle::quit()
 const int& Puzzle::operator[] (int i) const
 {
     return boxes[i];
+}
+
+const int& Puzzle::operator() (int i, int j) const
+{
+    return boxes[i+j*rows];
 }
 
 Puzzle::operator bool() const
@@ -220,8 +238,23 @@ std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle)
     return out;
 }
 
-// std::istream& operator>>(std::istream& in, const Puzzle& puzzle)
+// std::istream& operator>>(std::istream& in, Puzzle& puzzle)
 // {
-    
+//     char inputChar {};
+//     while(in)
+//     {
+//         in >> inputChar;
+//         switch (inputChar)
+//         {
+//         case 'w':
+//             puzzle.push_up();    break;
+//         case 's':
+//             puzzle.push_down();  break;
+//         case 'a':
+//             puzzle.push_left();  break;
+//         case 'd':
+//             puzzle.push_right(); break;
+//             }
+//     }
 //     return in;
 // }

@@ -27,9 +27,16 @@ public:
     Puzzle();
 
     // status
+    int  current_box();
     bool is_solved() const;
     void update_status();
     void quit();
+
+    // movement methods
+    void push_up();
+    void push_down();
+    void push_left();
+    void push_right();
 
     // debug methods
     // void print_boxes() const;
@@ -42,14 +49,20 @@ public:
     // friend std::istream& operator>>(std::istream& in ,       Puzzle puzzle);
 
     const int& operator[] (int i) const;
+    const int& operator() (int i, int j) const;
     operator bool() const;
     
 private:
     std::array<int,nboxes> boxes {};
-    std::array<int,nboxes> init_boxes(InitType initChoice);
+    int  m_currentBox {};
     
     bool m_is_solved {false};
     bool m_quit {false};
+
+    // private init methods
+    std::array<int,nboxes> init_boxes(InitType initChoice);
+    int init_current_box();
+
 };
 
 std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle);
