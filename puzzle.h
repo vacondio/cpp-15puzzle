@@ -36,11 +36,15 @@ public:
     // friend std::ostream& operator<<(std::ostream& out, const Puzzle puzzle);
     // friend std::istream& operator>>(std::istream& in ,       Puzzle puzzle);
 
+    const int& operator[] (int i) const;
     operator bool() const;
 private:
     std::array<int,nboxes> boxes {};
     std::array<int,nboxes> init_boxes(InitType initChoice);
 };
+
+std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle);
+// std::istream& operator>>(std::istream& in,  const Puzzle& puzzle);
 
 // // with C-style array
 // class PuzzleC

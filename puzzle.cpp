@@ -181,16 +181,38 @@ bool Puzzle::puzzle_is_solved() const
     return true;
 }
 
+const int& Puzzle::operator[] (int i) const
+{
+    return boxes[i];
+}
+
 Puzzle::operator bool() const
 {
     if (puzzle_is_solved()) return true;
     else return false;
 }
 
-// std::ostream& operator<<(std::ostream& out, const Puzzle puzzle)
-// {
-// }
+std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle)
+{
+    for(std::size_t i{0}; i<nboxes; ++i)
+    {
+        // formatting shall be fixed using formatting modifiers
+        // we shall get rid of the tab character while doing so
+        if (puzzle[i] != nboxes)
+            out << puzzle[i];
+        else
+            out << "  ";
+            
+        if ((i+1)%columns == 0)
+            out << "\n";
+        else
+            out << "\t";
+    }
+    return out;
+}
 
-// std::istream& operator>>(std::istream& in, Puzzle puzzle)
+// std::istream& operator>>(std::istream& in, const Puzzle& puzzle)
 // {
+    
+//     return in;
 // }
