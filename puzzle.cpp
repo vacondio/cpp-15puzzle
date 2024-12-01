@@ -45,7 +45,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
   
     case horizSwap:
     case vertSwap:
-    case randomOrderDumber:
+    case randomOrderDumber: {
         // // debug
         // for (int i{0}; i<nboxes; ++i)
         //   std::cout << distrib[i](gen) << "\n";
@@ -57,12 +57,12 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
             std::mt19937 gen(rd());
             std::uniform_int_distribution<> distrib{1,nboxes-i};
             
-            int num   {distrib(gen)};
+            int pos   {distrib(gen)};
             int delta {0};
             
             for (int k{0}; k<i; ++k)
             {
-                if (num+delta == tmp[k])
+                if (pos+delta == tmp[k])
                 {
                     ++delta;
                     k=-1;
@@ -70,12 +70,12 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
              }
             for (int j{0}; j<i; ++j)
             {
-                if (num > tmp[j])
+                if (pos > tmp[j])
                 {
                     ++delta;
                     for (int k{0}; k<i; ++k)
                     {
-                        if (num+delta == tmp[k])
+                        if (pos+delta == tmp[k])
                         {
                             ++delta;
                             k=-1;
@@ -83,9 +83,9 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
                     }
                 }
             }
-            tmp[i] = num+delta;
+            tmp[i] = pos+delta;
         }
-        break;
+        break; }
     case randomOrderDumb: {
         // // debug
         // for (int i{0}; i<nboxes; ++i)
