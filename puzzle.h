@@ -25,12 +25,17 @@ class Puzzle
 public:
     Puzzle(InitType initChoice);
     Puzzle();
-    
-    void print_boxes() const; // this shall be done with operator overloading
+
+    // status
+    bool is_solved() const;
+    void update_status();
+    void quit();
+
+    // debug methods
+    // void print_boxes() const;
     bool two_boxes_are_equal() const;
     bool max_too_high() const;
     bool min_too_low() const;
-    bool puzzle_is_solved() const;
 
     // do these as non-friend functions, it will be possible by using getters and setters
     // friend std::ostream& operator<<(std::ostream& out, const Puzzle puzzle);
@@ -38,13 +43,17 @@ public:
 
     const int& operator[] (int i) const;
     operator bool() const;
+    
 private:
     std::array<int,nboxes> boxes {};
     std::array<int,nboxes> init_boxes(InitType initChoice);
+    
+    bool m_is_solved {false};
+    bool m_quit {false};
 };
 
 std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle);
-// std::istream& operator>>(std::istream& in,  const Puzzle& puzzle);
+// std::istream& operator>>(std::istream& in,        Puzzle& puzzle);
 
 // // with C-style array
 // class PuzzleC

@@ -11,16 +11,15 @@ Puzzle::Puzzle(InitType initChoice)
 
 Puzzle::Puzzle() : Puzzle (InitType{randomOrder}) {}
 
-// will replace with overloading of operator <<
-void Puzzle::print_boxes() const
-{
-    for(std::size_t i{0}; i<nboxes; ++i)
-    {
-        std::cout << boxes[i];
-        if ((i+1)%columns == 0) std::cout << "\n";
-        else std::cout << "\t";
-    }
-}
+// void Puzzle::print_boxes() const
+// {
+//     for(std::size_t i{0}; i<nboxes; ++i)
+//     {
+//         std::cout << boxes[i];
+//         if ((i+1)%columns == 0) std::cout << "\n";
+//         else std::cout << "\t";
+//     }
+// }
 
 std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
 {
@@ -172,13 +171,23 @@ bool Puzzle::min_too_low() const
     return false;
 }
 
-bool Puzzle::puzzle_is_solved() const
+bool Puzzle::is_solved() const
+{
+    return m_is_solved;
+}
+
+void Puzzle::update_status()
 {
     for(int i{0}; i<nboxes-1; ++i)
     {
-        if (boxes[i]>boxes[i+1]) return false;
+        if (boxes[i]>boxes[i+1]) return;
     }
-    return true;
+    m_quit = true;
+}
+
+void Puzzle::quit()
+{
+    m_quit = true;
 }
 
 const int& Puzzle::operator[] (int i) const
@@ -188,7 +197,7 @@ const int& Puzzle::operator[] (int i) const
 
 Puzzle::operator bool() const
 {
-    if (puzzle_is_solved()) return true;
+    if (m_quit) return true;
     else return false;
 }
 

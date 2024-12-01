@@ -16,14 +16,11 @@ int main()
   
     // puzzle.print_boxes();
 
-    while(true)
+    while(!puzzle)
     {
         std::cout << puzzle;  // overload << operator
         // std::cin  >> puzzle;  // overload >> operator (needs input validity check)
-        if (puzzle) break; // can be implemented by adding conversion methods to the class
+        puzzle.update_status();
     }
-    
-    return 0;
-  
-
+        return 0;
 }
