@@ -2,7 +2,7 @@ CXX      := g++
 CXXFLAGS := -g
 
 OBJS := main.o puzzle.o
-BIN  := cpp15puzzle
+BIN  := cpp15puzzle.x
 
 DEL := rm -f
 
