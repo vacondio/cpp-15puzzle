@@ -189,72 +189,47 @@ void Puzzle::quit()
     m_quit = true;
 }
 
-// movement methods
+// movement method
 // Target is empty cell (currentBox)
 // Start is cell to be moved
-void Puzzle::push_up()
+
+void Puzzle::push(char dir)
 {
     int iTarget { m_currentBox2D.i };
     int jTarget { m_currentBox2D.j };
     
-    int iStart  { iTarget + 1 };
-    int jStart  { jTarget     };
-    
-    if (iStart > rows-1) return;
+    int iStart  {};
+    int jStart  {};
 
-    std::swap(boxes[ iStart*columns + jStart ],
-              boxes[iTarget*columns + jTarget]);
-    
-    m_currentBox1D   = iStart*columns + jStart;
-    m_currentBox2D.i = iStart;
-    m_currentBox2D.j = jStart;
-}
+    switch(dir)
+    {
+    case 'w':
+        iStart = iTarget + 1;
+        jStart = jTarget    ;
+        if (iStart > rows-1) return;
+        break;
 
-void Puzzle::push_down()
-{
-    int iTarget { m_currentBox2D.i };
-    int jTarget { m_currentBox2D.j };
-    
-    int iStart  { iTarget - 1 };
-    int jStart  { jTarget     };
-    
-    if (iStart < 0) return;
+    case 's':
+        iStart = iTarget - 1;
+        jStart = jTarget    ;
+        if (iStart < 0) return;
+        break;
 
-    std::swap(boxes[ iStart*columns + jStart ],
-              boxes[iTarget*columns + jTarget]);
-    
-    m_currentBox1D   = iStart*columns + jStart;
-    m_currentBox2D.i = iStart;
-    m_currentBox2D.j = jStart;
-}
+    case 'a':
+        iStart = iTarget    ;
+        jStart = jTarget + 1;
+        if (jStart > columns-1) return;
+        break;
 
-void Puzzle::push_left()
-{
-    int iTarget { m_currentBox2D.i };
-    int jTarget { m_currentBox2D.j };
-    
-    int iStart  { iTarget     };
-    int jStart  { jTarget + 1 };
-    
-    if (jStart > columns-1) return;
+    case 'd':
+        iStart = iTarget    ;
+        jStart = jTarget - 1;
+        if (jStart < 0) return;
+        break;
 
-    std::swap(boxes[ iStart*columns + jStart ],
-              boxes[iTarget*columns + jTarget]);
-    
-    m_currentBox1D   = iStart*columns + jStart;
-    m_currentBox2D.i = iStart;
-    m_currentBox2D.j = jStart;
-}
-
-void Puzzle::push_right()
-{
-    int iTarget { m_currentBox2D.i };
-    int jTarget { m_currentBox2D.j };
-    
-    int iStart  { iTarget     };
-    int jStart  { jTarget - 1 };
-    
-    if (jStart < 0) return;
+    default:
+        return;
+    }
 
     std::swap(boxes[ iStart*columns + jStart ],
               boxes[iTarget*columns + jTarget]);
@@ -337,17 +312,7 @@ std::istream& operator>>(std::istream& in, Puzzle& puzzle)
     // while(in)
     // {
         in >> inputChar;
-        switch (inputChar)
-        {
-        case 'w':
-            puzzle.push_up();    break;
-        case 's':
-            puzzle.push_down();  break;
-        case 'a':
-            puzzle.push_left();  break;
-        case 'd':
-            puzzle.push_right(); break;
-         }
+        puzzle.push(inputChar);
     // }
     return in;
 }

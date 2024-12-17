@@ -40,11 +40,8 @@ public:
     void update_status();
     void quit();
 
-    // movement methods
-    void push_up();
-    void push_down();
-    void push_left();
-    void push_right();
+    // movement method
+    void push(char dir);
 
     // debug methods
     // void print_boxes() const;
