@@ -1,10 +1,16 @@
 * 15puzzle
 
-Pet project to pick up C++ after some years of not using it.  Compile ~main.cpp~
-and ~puzzle.cpp~ to obtain an executable. For example, with ~g++~:
+Pet project to pick up C++ after some years of not using it.  Compile with ~g++~
+on GNU/Linux with
 
 #+BEGIN_SRC bash
-g++ main.cpp puzzle.cpp -o bin.x
+make
+#+END_SRC
+
+Clean the source tree with
+
+#+BEGIN_SRC bash
+make clean
 #+END_SRC
 
 More will come.
