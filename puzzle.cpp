@@ -190,6 +190,8 @@ void Puzzle::quit()
 }
 
 // movement methods
+// Target is empty cell (currentBox)
+// Start is cell to be moved
 void Puzzle::push_up()
 {
     int iTarget { m_currentBox2D.i };
@@ -208,19 +210,58 @@ void Puzzle::push_up()
     m_currentBox2D.j = jStart;
 }
 
-void push_down()
+void Puzzle::push_down()
 {
+    int iTarget { m_currentBox2D.i };
+    int jTarget { m_currentBox2D.j };
     
+    int iStart  { iTarget - 1 };
+    int jStart  { jTarget     };
+    
+    if (iStart < 0) return;
+
+    std::swap(boxes[ iStart*columns + jStart ],
+              boxes[iTarget*columns + jTarget]);
+    
+    m_currentBox1D   = iStart*columns + jStart;
+    m_currentBox2D.i = iStart;
+    m_currentBox2D.j = jStart;
 }
 
-void push_left()
+void Puzzle::push_left()
 {
+    int iTarget { m_currentBox2D.i };
+    int jTarget { m_currentBox2D.j };
     
+    int iStart  { iTarget     };
+    int jStart  { jTarget + 1 };
+    
+    if (jStart > columns-1) return;
+
+    std::swap(boxes[ iStart*columns + jStart ],
+              boxes[iTarget*columns + jTarget]);
+    
+    m_currentBox1D   = iStart*columns + jStart;
+    m_currentBox2D.i = iStart;
+    m_currentBox2D.j = jStart;
 }
 
-void push_right()
+void Puzzle::push_right()
 {
+    int iTarget { m_currentBox2D.i };
+    int jTarget { m_currentBox2D.j };
     
+    int iStart  { iTarget     };
+    int jStart  { jTarget - 1 };
+    
+    if (jStart < 0) return;
+
+    std::swap(boxes[ iStart*columns + jStart ],
+              boxes[iTarget*columns + jTarget]);
+    
+    m_currentBox1D   = iStart*columns + jStart;
+    m_currentBox2D.i = iStart;
+    m_currentBox2D.j = jStart;
 }
 
 // debug methods
@@ -300,12 +341,12 @@ std::istream& operator>>(std::istream& in, Puzzle& puzzle)
         {
         case 'w':
             puzzle.push_up();    break;
-        // case 's':
-        //     puzzle.push_down();  break;
-        // case 'a':
-        //     puzzle.push_left();  break;
-        // case 'd':
-        //     puzzle.push_right(); break;
+        case 's':
+            puzzle.push_down();  break;
+        case 'a':
+            puzzle.push_left();  break;
+        case 'd':
+            puzzle.push_right(); break;
          }
     // }
     return in;
