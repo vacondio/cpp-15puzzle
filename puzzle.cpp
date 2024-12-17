@@ -181,6 +181,7 @@ void Puzzle::update_status()
     {
         if (boxes[i]>boxes[i+1]) return;
     }
+    m_is_solved = true;
     m_quit = true;
 }
 
@@ -226,6 +227,11 @@ void Puzzle::push(char dir)
         jStart = jTarget - 1;
         if (jStart < 0) return;
         break;
+
+    case 'q':
+        m_quit = true;
+        break;
+        return;
 
     default:
         return;
