@@ -233,7 +233,9 @@ void Puzzle::push(char dir)
 
     std::swap(boxes[ iStart*columns + jStart ],
               boxes[iTarget*columns + jTarget]);
-    
+    /* could also do this if the the operator() overload didn't prevent
+     * modifying boxes:
+     * std::swap((*this)(iStart,jStart), (*this)(iTarget,jTarget));*/
     m_currentBox1D   = iStart*columns + jStart;
     m_currentBox2D.i = iStart;
     m_currentBox2D.j = jStart;
@@ -278,7 +280,7 @@ const int& Puzzle::operator[] (int i) const
 
 const int& Puzzle::operator() (int i, int j) const
 {
-    return boxes[i+j*rows];
+    return boxes[i*rows+j];
 }
 
 Puzzle::operator bool() const
