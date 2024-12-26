@@ -15,6 +15,140 @@ Puzzle::Puzzle(InitType initChoice)
 
 Puzzle::Puzzle() : Puzzle (InitType{randomOrder}) {}
 
+// status methods
+int Puzzle::empty_cell_1d() const
+{
+    return m_emptyCell1D;
+}
+
+ArrayIdx2D Puzzle::empty_cell_2d() const
+{
+    return m_emptyCell2D;
+}
+
+bool Puzzle::is_solved() const
+{
+    return m_is_solved;
+}
+
+void Puzzle::update_status()
+{
+    for(int i{0}; i<nCells-1; ++i)
+    {
+        if (m_cells[i]>m_cells[i+1]) return;
+    }
+    m_is_solved = true;
+    m_quit = true;
+}
+
+void Puzzle::quit()
+{
+    m_quit = true;
+}
+
+// movement method
+void Puzzle::push(char dir)
+{
+    int iTarget { m_emptyCell2D.i };
+    int jTarget { m_emptyCell2D.j };
+    
+    int iStart  {};
+    int jStart  {};
+
+    switch(dir)
+    {
+    case 'w':
+        iStart = iTarget + 1;
+        jStart = jTarget    ;
+        if (iStart > nRows-1) return;
+        break;
+
+    case 's':
+        iStart = iTarget - 1;
+        jStart = jTarget    ;
+        if (iStart < 0) return;
+        break;
+
+    case 'a':
+        iStart = iTarget    ;
+        jStart = jTarget + 1;
+        if (jStart > nCols-1) return;
+        break;
+
+    case 'd':
+        iStart = iTarget    ;
+        jStart = jTarget - 1;
+        if (jStart < 0) return;
+        break;
+
+    case 'q':
+        m_quit = true;
+        break;
+        return;
+
+    default:
+        return;
+    }
+
+    std::swap(m_cells[ iStart*nCols + jStart ],
+              m_cells[iTarget*nCols + jTarget]);
+    /* // could also do this if the the operator() overload didn't prevent
+     * // modifying boxes:
+     * std::swap((*this)(iStart,jStart), (*this)(iTarget,jTarget));*/
+    m_emptyCell1D   = iStart*nCols + jStart;
+    m_emptyCell2D.i = iStart;
+    m_emptyCell2D.j = jStart;
+}
+
+// debug methods
+bool Puzzle::two_cells_are_equal() const
+{
+    for (int i{0};   i<nCells; ++i)
+    for (int j{i+1}; j<nCells; ++j)
+    {
+        if (m_cells[i] == m_cells[j])
+            return true;
+    }
+    return false;
+}
+
+bool Puzzle::max_too_high() const
+{
+    for (int i{0}; i<nCells; ++i)
+    {
+        if (m_cells[i] > nCells)
+            return true;
+    }
+    return false;
+}
+
+bool Puzzle::min_too_low() const
+{
+    for (int i{0}; i<nCells; ++i)
+    {
+        if (m_cells[i] < 1)
+          return true;
+    }
+    return false;
+}
+
+// member operator overloads
+const int& Puzzle::operator[] (int i) const
+{
+    return m_cells[i];
+}
+
+const int& Puzzle::operator() (int i, int j) const
+{
+    return m_cells[i*nRows+j];
+}
+
+Puzzle::operator bool() const
+{
+    if (m_quit) return true;
+    else return false;
+}
+
 // private init methods
 std::array<int,nCells> Puzzle::init_cells(InitType initChoice)
 {
@@ -150,142 +284,7 @@ ArrayIdx2D Puzzle::init_empty_cell_2d()
     return ArrayIdx2D { i, j };
 }
 
-// status methods
-int Puzzle::empty_cell_1d() const
-{
-    return m_emptyCell1D;
-}
-
-ArrayIdx2D Puzzle::empty_cell_2d() const
-{
-    return m_emptyCell2D;
-}
-
-bool Puzzle::is_solved() const
-{
-    return m_is_solved;
-}
-
-void Puzzle::update_status()
-{
-    for(int i{0}; i<nCells-1; ++i)
-    {
-        if (m_cells[i]>m_cells[i+1]) return;
-    }
-    m_is_solved = true;
-    m_quit = true;
-}
-
-void Puzzle::quit()
-{
-    m_quit = true;
-}
-
-// movement method
-// Target is empty cell (emptyCell)
-// Start is cell to be moved
-
-void Puzzle::push(char dir)
-{
-    int iTarget { m_emptyCell2D.i };
-    int jTarget { m_emptyCell2D.j };
-    
-    int iStart  {};
-    int jStart  {};
-
-    switch(dir)
-    {
-    case 'w':
-        iStart = iTarget + 1;
-        jStart = jTarget    ;
-        if (iStart > nRows-1) return;
-        break;
-
-    case 's':
-        iStart = iTarget - 1;
-        jStart = jTarget    ;
-        if (iStart < 0) return;
-        break;
-
-    case 'a':
-        iStart = iTarget    ;
-        jStart = jTarget + 1;
-        if (jStart > nCols-1) return;
-        break;
-
-    case 'd':
-        iStart = iTarget    ;
-        jStart = jTarget - 1;
-        if (jStart < 0) return;
-        break;
-
-    case 'q':
-        m_quit = true;
-        break;
-        return;
-
-    default:
-        return;
-    }
-
-    std::swap(m_cells[ iStart*nCols + jStart ],
-              m_cells[iTarget*nCols + jTarget]);
-    /* // could also do this if the the operator() overload didn't prevent
-     * // modifying boxes:
-     * std::swap((*this)(iStart,jStart), (*this)(iTarget,jTarget));*/
-    m_emptyCell1D   = iStart*nCols + jStart;
-    m_emptyCell2D.i = iStart;
-    m_emptyCell2D.j = jStart;
-}
-
-// debug methods
-bool Puzzle::two_cells_are_equal() const
-{
-    for (int i{0};   i<nCells; ++i)
-    for (int j{i+1}; j<nCells; ++j)
-    {
-        if (m_cells[i] == m_cells[j])
-            return true;
-    }
-    return false;
-}
-
-bool Puzzle::max_too_high() const
-{
-    for (int i{0}; i<nCells; ++i)
-    {
-        if (m_cells[i] > nCells)
-            return true;
-    }
-    return false;
-}
-
-bool Puzzle::min_too_low() const
-{
-    for (int i{0}; i<nCells; ++i)
-    {
-        if (m_cells[i] < 1)
-          return true;
-    }
-    return false;
-}
-
-const int& Puzzle::operator[] (int i) const
-{
-    return m_cells[i];
-}
-
-const int& Puzzle::operator() (int i, int j) const
-{
-    return m_cells[i*nRows+j];
-}
-
-Puzzle::operator bool() const
-{
-    if (m_quit) return true;
-    else return false;
-}
-
+// non-member operator overloads
 std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle)
 {
     for(std::size_t i{0}; i<nCells; ++i)

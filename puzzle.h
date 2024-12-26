@@ -47,7 +47,7 @@ public:
     bool max_too_high() const;
     bool min_too_low() const;
 
-    // operator member overloads
+    // member operator overloads
     const int& operator[] (int i) const;
     const int& operator() (int i, int j) const;
     operator bool() const;
@@ -67,7 +67,7 @@ private:
     ArrayIdx2D init_empty_cell_2d();
 };
 
-// operator overloads
+// non-member operator overloads
 std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle);
 std::istream& operator>>(std::istream& in,        Puzzle& puzzle);
 
