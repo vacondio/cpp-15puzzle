@@ -259,15 +259,8 @@ std::array<int,nCells> Puzzle::init_cells(InitType initChoice)
         }
         break;
     }
+    // hopefully copy elision is performed here by the compiler
     return out;
-    // return {1 , 2 , 3 , 4 ,
-    //         5 , 6 , 7 , 8 ,
-    //         9 , 10, 11, 12,
-    //         13, 14, 15, 16}; /* bad practice to return but we'll do it for the
-    //                           *  sake of learning (it would be nice to use move
-    //                           *  semantics, but it is not supported by
-    //                           *  std::array)
-    //                           */
 }
 
 int Puzzle::init_empty_cell_1d()
