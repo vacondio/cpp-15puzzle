@@ -28,15 +28,15 @@ Puzzle::Puzzle() : Puzzle (InitType{randomOrder}) {}
 // private init methods
 std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
 {
-    std::array<int,nboxes> tmp {};
-    // int tmp[nboxes] {};
+    std::array<int,nboxes> out {};
+    // int out[nboxes] {};
   
     switch (initChoice)
     {
     case trivial:
         for (std::size_t i{0}; i<nboxes; ++i)
         {
-            tmp[i] = i+1;
+            out[i] = i+1;
         }
         break;
   
@@ -44,7 +44,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
         for (std::size_t i{0}, j{}; i<nboxes; ++i)
         {
             j = nboxes-i;
-            tmp[i] = j;
+            out[i] = j;
         }
         break;
   
@@ -62,7 +62,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
             
             for (int k{0}; k<i; ++k)
             {
-                if (pos+delta == tmp[k])
+                if (pos+delta == out[k])
                 {
                     ++delta;
                     k=-1;
@@ -70,12 +70,12 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
              }
             for (int j{0}; j<i; ++j)
             {
-                if (pos > tmp[j])
+                if (pos > out[j])
                 {
                     ++delta;
                     for (int k{0}; k<i; ++k)
                     {
-                        if (pos+delta == tmp[k])
+                        if (pos+delta == out[k])
                         {
                             ++delta;
                             k=-1;
@@ -83,7 +83,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
                     }
                 }
             }
-            tmp[i] = pos+delta;
+            out[i] = pos+delta;
         }
         break; }
     case randomOrderDumb: {
@@ -113,7 +113,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
             delta = delta1 + delta2;
 
             guesses[pos+delta] = 0;
-            tmp[i] = pos+delta+1;
+            out[i] = pos+delta+1;
         }
         break; }
     default:
@@ -126,7 +126,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
             ++i;
         }
         
-        for (auto& tile : tmp)
+        for (auto& tile : out)
         {
             int maxIdx { static_cast<int>(guesses.size()-1) };
             int pos    { Random::get(0,maxIdx) };
@@ -135,7 +135,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
         }
         break;
     }
-    return tmp;
+    return out;
     // return {1 , 2 , 3 , 4 ,
     //         5 , 6 , 7 , 8 ,
     //         9 , 10, 11, 12,
