@@ -9,41 +9,31 @@
 
 // constructors
 Puzzle::Puzzle(InitType initChoice)
-    : boxes(init_boxes(initChoice))
-    , m_currentBox1D { init_current_box_1d() }
-    , m_currentBox2D { init_current_box_2d() } {}
+    : m_cells       { init_cells(initChoice) }
+    , m_emptyCell1D { init_empty_cell_1d() }
+    , m_emptyCell2D { init_empty_cell_2d() } {}
 
 Puzzle::Puzzle() : Puzzle (InitType{randomOrder}) {}
 
-// void Puzzle::print_boxes() const
-// {
-//     for(std::size_t i{0}; i<nboxes; ++i)
-//     {
-//         std::cout << boxes[i];
-//         if ((i+1)%columns == 0) std::cout << "\n";
-//         else std::cout << "\t";
-//     }
-// }
-
 // private init methods
-std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
+std::array<int,nCells> Puzzle::init_cells(InitType initChoice)
 {
-    std::array<int,nboxes> out {};
-    // int out[nboxes] {};
+    std::array<int,nCells> out {};
+    // int out[nCells] {};
   
     switch (initChoice)
     {
     case trivial:
-        for (std::size_t i{0}; i<nboxes; ++i)
+        for (std::size_t i{0}; i<nCells; ++i)
         {
             out[i] = i+1;
         }
         break;
   
     case reverseTrivial:
-        for (std::size_t i{0}, j{}; i<nboxes; ++i)
+        for (std::size_t i{0}, j{}; i<nCells; ++i)
         {
-            j = nboxes-i;
+            j = nCells-i;
             out[i] = j;
         }
         break;
@@ -52,12 +42,12 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
     case vertSwap:
     case randomOrderDumber: {
         // // debug
-        // for (int i{0}; i<nboxes; ++i)
+        // for (int i{0}; i<nCells; ++i)
         //   std::cout << distrib[i](gen) << "\n";
         
-        for (int i{0}; i<nboxes; ++i)
+        for (int i{0}; i<nCells; ++i)
         {
-            int pos   {Random::get(1,nboxes-i)};
+            int pos   {Random::get(1,nCells-i)};
             int delta {0};
             
             for (int k{0}; k<i; ++k)
@@ -87,13 +77,13 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
         }
         break; }
     case randomOrderDumb: {
-        std::array<int,nboxes> guesses {};
-        for (int i{0}; i<nboxes; ++i)
+        std::array<int,nCells> guesses {};
+        for (int i{0}; i<nCells; ++i)
             guesses[i] = i+1;
 
-        for (int i{0}; i<nboxes; ++i)
+        for (int i{0}; i<nCells; ++i)
         {
-            int pos    {Random::get(0,nboxes-1-i)};
+            int pos    {Random::get(0,nCells-1-i)};
             int delta  {0};
             int delta1 {0};
             int delta2 {0};
@@ -118,7 +108,7 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
         break; }
     default:
     case randomOrder:
-        std::vector<int> guesses(nboxes);
+        std::vector<int> guesses(nCells);
 
         for (int i{1}; auto& guess : guesses)
         {
@@ -126,11 +116,11 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
             ++i;
         }
         
-        for (auto& tile : out)
+        for (auto& cell : out)
         {
             int maxIdx { static_cast<int>(guesses.size()-1) };
             int pos    { Random::get(0,maxIdx) };
-            tile = guesses[pos];
+            cell = guesses[pos];
             guesses.erase(guesses.begin() + pos);
         }
         break;
@@ -139,33 +129,36 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
     // return {1 , 2 , 3 , 4 ,
     //         5 , 6 , 7 , 8 ,
     //         9 , 10, 11, 12,
-    //         13, 14, 15, 16}; /* bad practice to return
-    //                             but we'll do it for the sake of learning */
+    //         13, 14, 15, 16}; /* bad practice to return but we'll do it for the
+    //                           *  sake of learning (it would be nice to use move
+    //                           *  semantics, but it is not supported by
+    //                           *  std::array)
+    //                           */
 }
 
-int Puzzle::init_current_box_1d()
+int Puzzle::init_empty_cell_1d()
 {
-    for (int i{0}; i<nboxes; ++i)
-        if (boxes[i]==nboxes) return i;
+    for (int i{0}; i<nCells; ++i)
+        if (m_cells[i]==nCells) return i;
     return -1;
 }
 
-ArrayIdx2D Puzzle::init_current_box_2d()
+ArrayIdx2D Puzzle::init_empty_cell_2d()
 {
-    int i { m_currentBox1D / columns };
-    int j { m_currentBox1D % columns };
+    int i { m_emptyCell1D / nCols };
+    int j { m_emptyCell1D % nCols };
     return ArrayIdx2D { i, j };
 }
 
 // status methods
-int Puzzle::current_box_1d() const
+int Puzzle::empty_cell_1d() const
 {
-    return m_currentBox1D;
+    return m_emptyCell1D;
 }
 
-ArrayIdx2D Puzzle::current_box_2d() const
+ArrayIdx2D Puzzle::empty_cell_2d() const
 {
-    return m_currentBox2D;
+    return m_emptyCell2D;
 }
 
 bool Puzzle::is_solved() const
@@ -175,9 +168,9 @@ bool Puzzle::is_solved() const
 
 void Puzzle::update_status()
 {
-    for(int i{0}; i<nboxes-1; ++i)
+    for(int i{0}; i<nCells-1; ++i)
     {
-        if (boxes[i]>boxes[i+1]) return;
+        if (m_cells[i]>m_cells[i+1]) return;
     }
     m_is_solved = true;
     m_quit = true;
@@ -189,13 +182,13 @@ void Puzzle::quit()
 }
 
 // movement method
-// Target is empty cell (currentBox)
+// Target is empty cell (emptyCell)
 // Start is cell to be moved
 
 void Puzzle::push(char dir)
 {
-    int iTarget { m_currentBox2D.i };
-    int jTarget { m_currentBox2D.j };
+    int iTarget { m_emptyCell2D.i };
+    int jTarget { m_emptyCell2D.j };
     
     int iStart  {};
     int jStart  {};
@@ -205,7 +198,7 @@ void Puzzle::push(char dir)
     case 'w':
         iStart = iTarget + 1;
         jStart = jTarget    ;
-        if (iStart > rows-1) return;
+        if (iStart > nRows-1) return;
         break;
 
     case 's':
@@ -217,7 +210,7 @@ void Puzzle::push(char dir)
     case 'a':
         iStart = iTarget    ;
         jStart = jTarget + 1;
-        if (jStart > columns-1) return;
+        if (jStart > nCols-1) return;
         break;
 
     case 'd':
@@ -235,23 +228,23 @@ void Puzzle::push(char dir)
         return;
     }
 
-    std::swap(boxes[ iStart*columns + jStart ],
-              boxes[iTarget*columns + jTarget]);
+    std::swap(m_cells[ iStart*nCols + jStart ],
+              m_cells[iTarget*nCols + jTarget]);
     /* // could also do this if the the operator() overload didn't prevent
      * // modifying boxes:
      * std::swap((*this)(iStart,jStart), (*this)(iTarget,jTarget));*/
-    m_currentBox1D   = iStart*columns + jStart;
-    m_currentBox2D.i = iStart;
-    m_currentBox2D.j = jStart;
+    m_emptyCell1D   = iStart*nCols + jStart;
+    m_emptyCell2D.i = iStart;
+    m_emptyCell2D.j = jStart;
 }
 
 // debug methods
-bool Puzzle::two_boxes_are_equal() const
+bool Puzzle::two_cells_are_equal() const
 {
-    for (int i{0};   i<nboxes; ++i)
-    for (int j{i+1}; j<nboxes; ++j)
+    for (int i{0};   i<nCells; ++i)
+    for (int j{i+1}; j<nCells; ++j)
     {
-        if (boxes[i] == boxes[j])
+        if (m_cells[i] == m_cells[j])
             return true;
     }
     return false;
@@ -259,9 +252,9 @@ bool Puzzle::two_boxes_are_equal() const
 
 bool Puzzle::max_too_high() const
 {
-    for (int i{0}; i<nboxes; ++i)
+    for (int i{0}; i<nCells; ++i)
     {
-        if (boxes[i] > nboxes)
+        if (m_cells[i] > nCells)
             return true;
     }
     return false;
@@ -269,9 +262,9 @@ bool Puzzle::max_too_high() const
 
 bool Puzzle::min_too_low() const
 {
-    for (int i{0}; i<nboxes; ++i)
+    for (int i{0}; i<nCells; ++i)
     {
-        if (boxes[i] < 1)
+        if (m_cells[i] < 1)
           return true;
     }
     return false;
@@ -279,12 +272,12 @@ bool Puzzle::min_too_low() const
 
 const int& Puzzle::operator[] (int i) const
 {
-    return boxes[i];
+    return m_cells[i];
 }
 
 const int& Puzzle::operator() (int i, int j) const
 {
-    return boxes[i*rows+j];
+    return m_cells[i*nRows+j];
 }
 
 Puzzle::operator bool() const
@@ -295,16 +288,16 @@ Puzzle::operator bool() const
 
 std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle)
 {
-    for(std::size_t i{0}; i<nboxes; ++i)
+    for(std::size_t i{0}; i<nCells; ++i)
     {
         // formatting shall be fixed using formatting modifiers
         // we shall get rid of the tab character while doing so
-        if (puzzle[i] != nboxes)
+        if (puzzle[i] != nCells)
             out << puzzle[i];
         else
             out << "  ";
             
-        if ((i+1)%columns == 0)
+        if ((i+1)%nCols == 0)
             out << "\n";
         else
             out << "\t";

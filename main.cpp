@@ -13,21 +13,18 @@ int main()
     // Puzzle puzzle(InitType{randomOrderDumber});
     // Puzzle puzzle(InitType{randomOrderDumb});
     Puzzle puzzle(InitType{randomOrder});
-  
-    // puzzle.print_boxes();
-
     
     while(!puzzle)
     {
         // debug
-        std::cout << "Current box in 1D is " << puzzle.current_box_1d() << "\n";
-        std::cout << "Current box in 2D is " << puzzle.current_box_2d().i
-                  << ", "                    << puzzle.current_box_2d().j << "\n";
-        std::cout << "Current box holds " << puzzle(puzzle.current_box_2d().i,
-                                                    puzzle.current_box_2d().j) << "\n";
+        std::cout << "Empty cell in 1D is " << puzzle.empty_cell_1d() << "\n";
+        std::cout << "Empty cell in 2D is " << puzzle.empty_cell_2d().i
+                  << ", "                   << puzzle.empty_cell_2d().j << "\n";
+        std::cout << "Empty cell holds "    << puzzle(puzzle.empty_cell_2d().i,
+                                                      puzzle.empty_cell_2d().j) << "\n";
         // production
-        std::cout << puzzle;  // overload << operator
-        std::cin  >> puzzle;  // overload >> operator (needs input validity check)
+        std::cout << puzzle;
+        std::cin  >> puzzle;
         puzzle.update_status();
     }
     return 0;
