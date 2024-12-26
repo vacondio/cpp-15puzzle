@@ -1,5 +1,5 @@
 CXX      := g++
-CXXFLAGS := -g
+CXXFLAGS := -g -std=c++20
 
 OBJS := main.o puzzle.o
 BIN  := cpp15puzzle.x

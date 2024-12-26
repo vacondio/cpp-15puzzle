@@ -119,21 +119,19 @@ std::array<int,nboxes> Puzzle::init_boxes(InitType initChoice)
     default:
     case randomOrder:
         std::vector<int> guesses(nboxes);
-        for (int i{0}; i<nboxes; ++i)
-            guesses[i] = i+1;
-        
-        for (int i{0}; i<nboxes; ++i)
+
+        for (int i{1}; auto& guess : guesses)
         {
-            int pos {Random::get(0,nboxes-1-i)};
-            tmp[i] = guesses[pos];
+            guess = i;
+            ++i;
+        }
+        
+        for (auto& tile : tmp)
+        {
+            int maxIdx { static_cast<int>(guesses.size()-1) };
+            int pos    { Random::get(0,maxIdx) };
+            tile = guesses[pos];
             guesses.erase(guesses.begin() + pos);
-            
-            // // debug
-            // for (int j{0}; j<guesses.size(); ++j)
-            // {
-            //     std::cout << guesses[j] << "\t";
-            // }
-            // std::cout << "\n";
         }
         break;
     }
@@ -239,8 +237,8 @@ void Puzzle::push(char dir)
 
     std::swap(boxes[ iStart*columns + jStart ],
               boxes[iTarget*columns + jTarget]);
-    /* could also do this if the the operator() overload didn't prevent
-     * modifying boxes:
+    /* // could also do this if the the operator() overload didn't prevent
+     * // modifying boxes:
      * std::swap((*this)(iStart,jStart), (*this)(iTarget,jTarget));*/
     m_currentBox1D   = iStart*columns + jStart;
     m_currentBox2D.i = iStart;
