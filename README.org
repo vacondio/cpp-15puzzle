@@ -1,7 +1,8 @@
 * 15puzzle
+Pet project to pick up C++ after some years of not using it.
 
-Pet project to pick up C++ after some years of not using it.  Compile with ~g++~
-on GNU/Linux with
+** Compile instructions
+Compile with ~g++~ on GNU/Linux with
 
 #+BEGIN_SRC bash
 make
@@ -13,31 +14,43 @@ Clean the source tree with
 make clean
 #+END_SRC
 
-More will come.
 
-** To-do list
-*** DONE wrap random number generation in a class
-*** TODO allow for initialization choice via command line arguments
-*** TODO add movement methods to Puzzle class
+** Game instructions
+Use the ~wasd~ keys to slide numbers into the empty cell from the neighbouring
+cells.  For example, enter the ~s~ character to slide the number down from the
+cell above the empty cell.  The goal is to arrange all numbers in increasing
+order with no empty cells in between them!
 
-** Remarks
+You can enter all the moves you want in a single line: after hitting ~<RET>~,
+they will all be executed at once. Invalid input is ignored.
 
-There are currently two random generation algorithms for the initial puzzle:
-~randomOrder~ and ~randomOrderDumb~.
+Enter ~q~ to quit the game at any time.
+
+
+** Technical Remarks
+
+There are currently three random generation algorithms for the initial puzzle:
+~randomOrder~, ~randomOrderDumb~ and ~randomOrderDumber~.
 
 ~randomOrder~ makes use of a very straightforward method based on ~std::vector~;
 whereas ~randomOrderDumb~ is based on ~std::array~, avoiding dynamic memory
-allocation.  In both cases a random number i is generated to extract the integer
-in the i-th position inside the ~{1, ..., 16}~ array.  While ~randomOrder~ just
-removes the extracted number from the array, ~randomOrderDumb~ has to make sure
-at every extraction that previously extracted numbers are not re-extracted,
-since its array cannot be resized.  The latter algorithm scales horribly,
-becoming way more expensive than the former for larger puzzles.
+allocation.  In both cases a random number ~i~ is generated to extract the
+integer in the ~i~-th position inside the ~{1, ..., 16}~ array.  While
+~randomOrder~ just removes the extracted number from the array,
+~randomOrderDumb~ has to make sure at every extraction that previously extracted
+numbers are not re-extracted, since its array cannot be resized.  This is done
+by setting to ~0~ extracted numbers.
 
-Now that I think about it, starting from another fixed ~{1, ..., 16}~ array and
-setting the extracted numbers to zero could make the algorithm faster. I should
-try this and see whether it is still way worse than the std::vector-based one.
+~randomOrderDumber~ is an implementation of ~randomOrderDumb~ that does not
+destroy the ~{1, ..., 16}~ array by setting extracted numbers to ~0~. It scales
+horribly: just try to recompile the program by increasing the ~nRows~ and
+~nCols~ variables by one or two orders of magnitude.
 
-*** QUICK NOTE
-The new algorithm was just added and is the new randomOrderDumb, and looks much
-faster. Old dumb algorithm is now randomOrderDumber.
+** To-do list
+- Change name to ~randomOrderDumb~ (it is not so dumb after all)
+- Polishing (e.g. add a welcome message)
+- Add command line argument support (for e.g. choosing the init mode)
+- Add undo/redo support by recording the commands injected into Puzzle (a
+  separate class is likely to be needed?)
+- Save high score in a directory in user home (e.g. ~$HOME/.cpp15puzzle/~)
+  
