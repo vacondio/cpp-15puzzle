@@ -28,4 +28,21 @@ int main()
         puzzle.update_status();
     }
     return 0;
+
+    // a few ideas for how this should look like in the future
+    // while(!puzzle)
+    // {
+    //     cout << puzzle;
+    //     cin >> inputHandler >> puzzle;
+    //     // puzzle.update_status(); // move this into push function
+        
+    //     /*  inputHandler should contain a dictionary turning 'wasd' characters
+    //      *  into characters for the switch inside puzzle.  The dictionary will
+    //      *  be hard-coded.  The whole thing will be string-based/stream-based
+    //      *  and will allow for simple undoing and redoing.  The inputHandler
+    //      *  will take care of recording a history in order to feed the correct
+    //      *  characters to puzzle.  'u' and 'r' will be used for undo and redo
+    //      *  respectively.
+    //      */ 
+    // }
 }
