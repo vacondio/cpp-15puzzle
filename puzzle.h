@@ -8,26 +8,28 @@ constexpr int nRows  { 4 };
 constexpr int nCols  { 4 };
 constexpr int nCells { nRows*nCols };
 
-struct ArrayIdx2D
-{
-    int i {};
-    int j {};
-};
-
-enum InitType
-{
-    trivial,
-    reverseTrivial,
-    horizSwap,
-    vertSwap,
-    randomOrderDumber,
-    randomOrderDumb,
-    randomOrder,  
-};
 
 class Puzzle
 {
 public:
+    // data types
+    enum InitType
+    {
+        trivial,
+        reverseTrivial,
+        horizSwap,
+        vertSwap,
+        randomOrderDumber,
+        randomOrderDumb,
+        randomOrder,  
+    };
+
+    struct ArrayIdx2D
+    {
+        int i {};
+        int j {};
+    };
+
     // constructors
     Puzzle(InitType initChoice);
     Puzzle();
@@ -46,6 +48,7 @@ public:
     bool two_cells_are_equal() const;
     bool max_too_high() const;
     bool min_too_low() const;
+
 
     // member operator overloads
     const int& operator[] (int i) const;

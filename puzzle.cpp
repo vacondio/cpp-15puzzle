@@ -21,7 +21,7 @@ int Puzzle::empty_cell_1d() const
     return m_emptyCell1D;
 }
 
-ArrayIdx2D Puzzle::empty_cell_2d() const
+Puzzle::ArrayIdx2D Puzzle::empty_cell_2d() const
 {
     return m_emptyCell2D;
 }
@@ -270,11 +270,11 @@ int Puzzle::init_empty_cell_1d()
     return -1;
 }
 
-ArrayIdx2D Puzzle::init_empty_cell_2d()
+Puzzle::ArrayIdx2D Puzzle::init_empty_cell_2d()
 {
     int i { m_emptyCell1D / nCols };
     int j { m_emptyCell1D % nCols };
-    return ArrayIdx2D { i, j };
+    return Puzzle::ArrayIdx2D { i, j };
 }
 
 // non-member operator overloads

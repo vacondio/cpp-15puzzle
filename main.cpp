@@ -12,7 +12,7 @@ int main()
     // Puzzle puzzle(InitType{vertSwap});
     // Puzzle puzzle(InitType{randomOrderDumber});
     // Puzzle puzzle(InitType{randomOrderDumb});
-    Puzzle puzzle(InitType{randomOrder});
+    Puzzle puzzle(Puzzle::randomOrder);
     
     while(!puzzle)
     {
