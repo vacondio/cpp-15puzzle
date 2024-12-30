@@ -259,7 +259,7 @@ std::array<int,nCells> Puzzle::init_cells(InitType initChoice)
         }
         break;
     }
-    // hopefully copy elision is performed here by the compiler
+    // copy elision verified with g++
     return out;
 }
 
