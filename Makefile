@@ -1,7 +1,7 @@
 CXX      := g++
 CXXFLAGS := -g -std=c++20
 
-OBJS := main.o puzzle.o
+OBJS := main.o input_handler.o puzzle.o
 BIN  := cpp15puzzle.x
 
 DEL := rm -f
@@ -9,7 +9,8 @@ DEL := rm -f
 $(BIN) : $(OBJS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(BIN) $(OBJS)
 
-main.o   : puzzle.h
+main.o   : input_handler.h puzzle.h
+input_handler.o : input_handler.h
 puzzle.o : puzzle.h Random.h
 
 clean:
