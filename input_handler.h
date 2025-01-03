@@ -11,7 +11,7 @@ class InputHandler
 {
 public:
     // constructors
-    InputHandler(std::unordered_map<std::string_view,int> dict, char delim='\n');
+    InputHandler(std::unordered_map<std::string_view,char> dict, char delim='\n');
     // InputHandler(const std::array<T>& keysm const std::array<U>& items, char delim);
 
     // getters
@@ -21,15 +21,15 @@ public:
     
     // operator overloads
     friend std::stringstream& operator>>(std::istream&, InputHandler&);
+    friend std::ostream&      operator<<(std::ostream&, InputHandler&);
 
 private:
-    std::unordered_map<std::string_view,int> m_dict {};
-    char                                     m_delim {};
-    std::stringstream                        m_translatedStream {};
+    std::unordered_map<std::string_view,char> m_dict {};
+    const char                                m_delim {};
+    std::stringstream                         m_translatedStream {};
 
     // private methods
     void clean_istream(std::istream&);
-    void clean_sstream(std::stringstream&); // these should be templated
     //
     // when a template it will be
     // std::unordered_map<T,U> m_dict {};

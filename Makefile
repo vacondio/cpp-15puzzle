@@ -1,5 +1,5 @@
 CXX      := g++
-CXXFLAGS := -g -std=c++20
+CXXFLAGS := -g -std=c++20 # -D NDEBUG
 
 OBJS := main.o input_handler.o puzzle.o
 BIN  := cpp15puzzle.x

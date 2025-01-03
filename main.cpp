@@ -1,7 +1,22 @@
+#include "input_handler.h"
 #include "puzzle.h"
 #include <array>
 #include <iostream>
+#include <utility>
+#include <string>
+#include <string_view>
+#include <unordered_map>
 // #include <cstddef>
+
+namespace Input
+{
+    using namespace std::string_view_literals;
+    const std::unordered_map puzzleMappings { std::pair{"w"sv,'u'},
+                                              std::pair{"a"sv,'l'},
+                                              std::pair{"s"sv,'d'},
+                                              std::pair{"d"sv,'r'},
+                                              std::pair{"q"sv,'q'} };
+}
 
 int main()
 {
@@ -12,9 +27,15 @@ int main()
     // Puzzle puzzle(InitType{vertSwap});
     // Puzzle puzzle(InitType{randomOrderDumber});
     // Puzzle puzzle(InitType{randomOrderDumb});
-    Puzzle puzzle(Puzzle::randomOrder);
+    InputHandler inputHandler(Input::puzzleMappings);
+    Puzzle       puzzle(Puzzle::randomOrder);
+
+    #ifndef NDEBUG
+    std::cout << "Program was compiled in debug mode\n";
+    #endif
     
     while(!puzzle)
+    // for (int i=0; i<2; ++i)
     {
         // debug
         std::cout << "Empty cell in 1D is " << puzzle.empty_cell_1d() << "\n";
@@ -24,7 +45,13 @@ int main()
                                                       puzzle.empty_cell_2d().j) << "\n";
         // production
         std::cout << puzzle;
-        std::cin  >> puzzle;
+        // std::cin  >> puzzle;
+        std::cin >> inputHandler >> puzzle;
+
+        // std::string outstring {};
+        // std::cin >> inputHandler;
+        // std::cout << "Translated string: " << inputHandler << '\n';
+        
         puzzle.update_status();
     }
     return 0;

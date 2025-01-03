@@ -2,10 +2,13 @@
 #include "Random.h"
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <cstddef>
 #include <iostream>
 #include <random>
 #include <vector>
+
+#include <cstdlib>
 
 // constructors
 Puzzle::Puzzle(InitType initChoice)
@@ -57,25 +60,25 @@ void Puzzle::push(char dir)
 
     switch(dir)
     {
-    case 'w':
+    case 'u':
         iStart = iTarget + 1;
         jStart = jTarget    ;
         if (iStart > nRows-1) return;
         break;
 
-    case 's':
+    case 'd':
         iStart = iTarget - 1;
         jStart = jTarget    ;
         if (iStart < 0) return;
         break;
 
-    case 'a':
+    case 'l':
         iStart = iTarget    ;
         jStart = jTarget + 1;
         if (jStart > nCols-1) return;
         break;
 
-    case 'd':
+    case 'r':
         iStart = iTarget    ;
         jStart = jTarget - 1;
         if (jStart < 0) return;
@@ -299,11 +302,18 @@ std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle)
 
 std::istream& operator>>(std::istream& in, Puzzle& puzzle)
 {
-    char inputChar {};
-    // while(in)
-    // {
-        in >> inputChar;
-        puzzle.push(inputChar);
-    // }
+    char dir {};
+    while(in.peek() != '\n')
+    {
+        // consider handling this also in production
+        assert(in && "Puzzle: in is in failstate");
+
+        in >> dir;
+        while (in.peek() == ' ') in.get();
+        
+        puzzle.push(dir);
+    }
+    in.get(); // remove delimiter from stream
+    
     return in;
 }

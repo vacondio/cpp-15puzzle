@@ -24,6 +24,14 @@ public:
         randomOrder,  
     };
 
+    enum PushDirection
+    {
+        up,
+        down,
+        left,
+        right,
+    };
+
     struct ArrayIdx2D
     {
         int i {};

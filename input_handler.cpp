@@ -1,11 +1,14 @@
 #include "input_handler.h"
+#include <cassert>
 #include <iostream>
 #include <limits> // for std::numeric_limits
 #include <sstream>
 #include <unordered_map>
+
+#include <cstdlib>
 //#include <string> // in case we want to use std::char_traits<char>::eof
 
-InputHandler::InputHandler(std::unordered_map<std::string_view,int> dict,
+InputHandler::InputHandler(std::unordered_map<std::string_view,char> dict,
                            char delim)
     : m_translatedStream {}
     , m_dict  { dict }
@@ -16,35 +19,55 @@ std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
     // clean_sstream(m_translatedStream);
     const char delim {inputHandler.m_delim};
     
-    std::string       currentWord {};
-    std::stringstream translatedWord {};
-    std::string       translatedStrUnit {};
-    std::string       translatedString {};
+    std::string currentWord {};
+    std::string translatedStrUnit {};
+    std::string translatedString {};
 
-    while ((in>>std::ws).peek() != delim)
+    while (true)
     {
-        if (in.eof())
-        {
-            // send exit request to Puzzle
-            // should also consider other failbits
-        }
+        // consider handling this also in production
+        assert(in && "InputHandler: in is in failstate\n");
 
         in >> currentWord;
+        while(in.peek() == ' ') in.get();
+        
         if (inputHandler.m_dict.contains(currentWord))
         {
+            std::stringstream translatedWord {};
             translatedWord << inputHandler.m_dict[currentWord];
             translatedWord >> translatedStrUnit;
-            translatedString += translatedStrUnit;
+            translatedString += translatedStrUnit + ' ';
         }
         else
+        {
+            in.ignore(std::numeric_limits<std::streamsize>::max(), delim);
             break;
+        }
+
+        if (in.peek() == delim)
+        {
+            in.get();
+            break;
+        }
     }
-    translatedString += delim;
+    translatedString += delim; // remove delimiter from istream and add it to
+                               // translated stringstream
     
     inputHandler.m_translatedStream.str(std::move(translatedString));
     // clean_istream(in);
     
     return inputHandler.m_translatedStream;
+}
+
+std::ostream& operator<<(std::ostream& out, InputHandler& inputHandler)
+{
+    std::string outstr {};
+    std::getline(inputHandler.m_translatedStream, outstr);
+    out << outstr;
+    
+    // out << inputHandler.m_translatedStream.str() << '\n';
+    
+    return out;
 }
 
 void InputHandler::clean_istream(std::istream& istream)
@@ -63,12 +86,6 @@ void InputHandler::clean_istream(std::istream& istream)
     //
     // // these are all less performant alternatives, although simpler to write
     //
-}
-
-void InputHandler::clean_sstream(std::stringstream& sstream)
-{
-    sstream.clear();
-    sstream.ignore(std::numeric_limits<std::streamsize>::max(), m_delim);
 }
 
 
