@@ -309,11 +309,11 @@ std::istream& operator>>(std::istream& in, Puzzle& puzzle)
         assert(in && "Puzzle: in is in failstate");
 
         in >> dir;
-        while (in.peek() == ' ') in.get();
+        while (in.peek() == ' ') in.ignore();
         
         puzzle.push(dir);
     }
-    in.get();                 // ... and remove '\n' from stream
+    in.ignore();              // ... and remove '\n' from stream
     
     return in;
 }

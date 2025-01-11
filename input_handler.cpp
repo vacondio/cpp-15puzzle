@@ -31,7 +31,7 @@ std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
         assert(in && "InputHandler: in is in failstate\n");
 
         in >> currentWord;
-        while(in.peek() == ' ') in.get(); // eat whitespace (but not '\n')
+        while(in.peek() == ' ') in.ignore(); // eat whitespace (but not '\n')
         
         if (inputHandler.m_dict.contains(currentWord))
         {
@@ -47,7 +47,7 @@ std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
 
         if (in.peek() == delimIn)
         {
-            in.get();
+            in.ignore();
             break; // ... or if delimiter is reached
         }
 
@@ -83,7 +83,7 @@ void InputHandler::clean_istream(std::istream& istream)
     //
     // // alternatively
     // while (!istream.eof())
-    //     istream.get();
+    //     istream.ignore();
     // istream.clear();
     //
     // // if we do not want to end up with a failbit
