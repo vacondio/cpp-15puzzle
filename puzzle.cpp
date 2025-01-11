@@ -303,7 +303,7 @@ std::ostream& operator<<(std::ostream& out, const Puzzle& puzzle)
 std::istream& operator>>(std::istream& in, Puzzle& puzzle)
 {
     char dir {};
-    while(in.peek() != '\n')
+    while(in.peek() != '\n')  // iterate until '\n' is found...
     {
         // consider handling this also in production
         assert(in && "Puzzle: in is in failstate");
@@ -313,7 +313,7 @@ std::istream& operator>>(std::istream& in, Puzzle& puzzle)
         
         puzzle.push(dir);
     }
-    in.get(); // remove delimiter from stream
+    in.get();                 // ... and remove '\n' from stream
     
     return in;
 }
