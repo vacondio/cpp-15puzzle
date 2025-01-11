@@ -4,20 +4,21 @@
 #include <limits> // for std::numeric_limits
 #include <sstream>
 #include <unordered_map>
-
 #include <cstdlib>
 //#include <string> // in case we want to use std::char_traits<char>::eof
 
 InputHandler::InputHandler(std::unordered_map<std::string_view,char> dict,
-                           char delim)
+                           char delimIn, char delimOut)
     : m_translatedStream {}
-    , m_dict  { dict }
-    , m_delim { delim } {}
+    , m_dict     { dict }
+    , m_delimIn  { delimIn }
+    , m_delimOut { delimOut } {}
 
 std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
 {
     // clean_sstream(m_translatedStream);
-    const char delim {inputHandler.m_delim};
+    const char delimIn  {inputHandler.m_delimIn};
+    const char delimOut {inputHandler.m_delimOut};
     
     std::string currentWord {};
     std::string translatedStrUnit {};
@@ -40,18 +41,17 @@ std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
         }
         else
         {
-            in.ignore(std::numeric_limits<std::streamsize>::max(), delim);
+            in.ignore(std::numeric_limits<std::streamsize>::max(), delimIn);
             break; // exit as soon as invalid input is encountered...
         }
 
-        if (in.peek() == delim)
+        if (in.peek() == delimIn)
         {
             in.get();
             break; // ... or if delimiter is reached
         }
     }
-    translatedString += delim; // add delimiter to translated string
-                               // (should split into delimIn and delimOut)
+    translatedString += delimOut; // add delimiter to translated string
     
     inputHandler.m_translatedStream.str(std::move(translatedString));
     // clean_istream(in);
@@ -75,7 +75,7 @@ std::ostream& operator<<(std::ostream& out, InputHandler& inputHandler)
 void InputHandler::clean_istream(std::istream& istream)
 {
     istream.clear();
-    istream.ignore(std::numeric_limits<std::streamsize>::max(), m_delim);
+    istream.ignore(std::numeric_limits<std::streamsize>::max(), m_delimIn);
     //
     // // alternatively
     // while (!istream.eof())

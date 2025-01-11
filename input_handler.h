@@ -11,11 +11,12 @@ class InputHandler
 {
 public:
     // constructors
-    InputHandler(std::unordered_map<std::string_view,char> dict, char delim='\n');
+    InputHandler(std::unordered_map<std::string_view,char> dict,
+                 char delimIn='\n', char delimOut='\n');
     // InputHandler(const std::array<T>& keysm const std::array<U>& items, char delim);
 
     // getters
-    const std::unordered_map<std::string,int>& get_dict() const;
+    const std::unordered_map<std::string_view,int>& get_dict() const;
     // when a template, it will be
     // const std::unordered_map<T,U>& get_dict() const;
     
@@ -25,8 +26,10 @@ public:
 
 private:
     std::unordered_map<std::string_view,char> m_dict {};
-    const char                                m_delim {};
-    std::stringstream                         m_translatedStream {};
+    
+    const char        m_delimIn  {};
+    const char        m_delimOut {};
+    std::stringstream m_translatedStream {};
 
     // private methods
     void clean_istream(std::istream&);
