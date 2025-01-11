@@ -14,7 +14,7 @@ InputHandler::InputHandler(std::unordered_map<std::string_view,char> dict,
     , m_delimIn  { delimIn }
     , m_delimOut { delimOut } {}
 
-std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
+std::istringstream& operator>>(std::istream& in, InputHandler& inputHandler)
 {
     // clean_sstream(m_translatedStream);
     const char delimIn  {inputHandler.m_delimIn};

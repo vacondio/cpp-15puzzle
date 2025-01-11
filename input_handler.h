@@ -21,15 +21,15 @@ public:
     // const std::unordered_map<T,U>& get_dict() const;
     
     // operator overloads
-    friend std::stringstream& operator>>(std::istream&, InputHandler&);
-    friend std::ostream&      operator<<(std::ostream&, InputHandler&);
+    friend std::istringstream& operator>>(std::istream&, InputHandler&);
+    friend std::ostream&       operator<<(std::ostream&, InputHandler&);
 
 private:
     std::unordered_map<std::string_view,char> m_dict {};
     
-    const char        m_delimIn  {};
-    const char        m_delimOut {};
-    std::stringstream m_translatedStream {};
+    const char         m_delimIn  {};
+    const char         m_delimOut {};
+    std::istringstream m_translatedStream {};
 
     // private methods
     void clean_istream(std::istream&);
