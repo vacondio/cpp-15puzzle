@@ -29,7 +29,7 @@ std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
         assert(in && "InputHandler: in is in failstate\n");
 
         in >> currentWord;
-        while(in.peek() == ' ') in.get();
+        while(in.peek() == ' ') in.get(); // eat whitespace (but not '\n')
         
         if (inputHandler.m_dict.contains(currentWord))
         {
@@ -41,17 +41,17 @@ std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
         else
         {
             in.ignore(std::numeric_limits<std::streamsize>::max(), delim);
-            break;
+            break; // exit as soon as invalid input is encountered...
         }
 
         if (in.peek() == delim)
         {
             in.get();
-            break;
+            break; // ... or if delimiter is reached
         }
     }
-    translatedString += delim; // remove delimiter from istream and add it to
-                               // translated stringstream
+    translatedString += delim; // add delimiter to translated string
+                               // (should split into delimIn and delimOut)
     
     inputHandler.m_translatedStream.str(std::move(translatedString));
     // clean_istream(in);
