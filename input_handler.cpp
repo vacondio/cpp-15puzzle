@@ -20,9 +20,10 @@ std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
     const char delimIn  {inputHandler.m_delimIn};
     const char delimOut {inputHandler.m_delimOut};
     
-    std::string currentWord {};
-    std::string translatedStrUnit {};
-    std::string translatedString {};
+    std::string       currentWord {};
+    std::stringstream translatedWord {};
+    std::string       translatedStrUnit {};
+    std::string       translatedString {};
 
     while (true)
     {
@@ -34,7 +35,6 @@ std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
         
         if (inputHandler.m_dict.contains(currentWord))
         {
-            std::stringstream translatedWord {};
             translatedWord << inputHandler.m_dict[currentWord];
             translatedWord >> translatedStrUnit;
             translatedString += translatedStrUnit + ' ';
@@ -50,6 +50,10 @@ std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
             in.get();
             break; // ... or if delimiter is reached
         }
+
+        // restore translatedWord ostream
+        translatedWord.clear();
+        translatedWord.str("");
     }
     translatedString += delimOut; // add delimiter to translated string
     
