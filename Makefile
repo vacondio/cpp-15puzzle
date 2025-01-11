@@ -9,7 +9,7 @@ DEL := rm -f
 $(BIN) : $(OBJS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(BIN) $(OBJS)
 
-main.o   : input_handler.h puzzle.h
+main.o   : globals.h input_handler.h puzzle.h
 input_handler.o : input_handler.h
 puzzle.o : puzzle.h Random.h
 

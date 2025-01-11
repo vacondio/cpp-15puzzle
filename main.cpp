@@ -1,22 +1,11 @@
+#include "globals.h"
 #include "input_handler.h"
 #include "puzzle.h"
-#include <array>
 #include <iostream>
-#include <utility>
-#include <string>
-#include <string_view>
-#include <unordered_map>
+// #include <string>
+// #include <string_view>
 // #include <cstddef>
 
-namespace Input
-{
-    using namespace std::string_view_literals;
-    const std::unordered_map puzzleMappings { std::pair{"w"sv,'u'},
-                                              std::pair{"a"sv,'l'},
-                                              std::pair{"s"sv,'d'},
-                                              std::pair{"d"sv,'r'},
-                                              std::pair{"q"sv,'q'} };
-}
 
 int main()
 {
