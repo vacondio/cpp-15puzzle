@@ -61,11 +61,13 @@ std::stringstream& operator>>(std::istream& in, InputHandler& inputHandler)
 
 std::ostream& operator<<(std::ostream& out, InputHandler& inputHandler)
 {
-    std::string outstr {};
-    std::getline(inputHandler.m_translatedStream, outstr);
-    out << outstr;
-    
-    // out << inputHandler.m_translatedStream.str() << '\n';
+    // // doing as follows destroys the content, which we do not actually want
+    // std::string outstr {};
+    // std::getline(inputHandler.m_translatedStream, outstr);
+    // out << outstr;
+
+    // this creates a copy of the underlying string instead
+    out << inputHandler.m_translatedStream.str();
     
     return out;
 }
