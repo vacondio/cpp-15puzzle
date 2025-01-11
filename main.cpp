@@ -37,15 +37,15 @@ int main()
     while(!puzzle)
     // for (int i=0; i<2; ++i)
     {
-        // debug
+        #ifndef NDEBUG
         std::cout << "Empty cell in 1D is " << puzzle.empty_cell_1d() << "\n";
         std::cout << "Empty cell in 2D is " << puzzle.empty_cell_2d().i
                   << ", "                   << puzzle.empty_cell_2d().j << "\n";
         std::cout << "Empty cell holds "    << puzzle(puzzle.empty_cell_2d().i,
                                                       puzzle.empty_cell_2d().j) << "\n";
-        // production
+        #endif
+        
         std::cout << puzzle;
-        // std::cin  >> puzzle;
         std::cin >> inputHandler >> puzzle;
 
         // std::string outstring {};
