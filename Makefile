@@ -13,6 +13,7 @@ main.o   : globals.h input_handler.h puzzle.h
 input_handler.o : input_handler.h
 puzzle.o : puzzle.h Random.h
 
+.PHONY: clean
 clean:
 	@for item in $(OBJS);\
 	    do if [ -f $$item ]; then $(DEL) $$item; fi;\
